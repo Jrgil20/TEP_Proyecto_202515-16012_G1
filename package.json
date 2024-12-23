@@ -1,0 +1,12 @@
+{
+  "name": "tep_proyecto_202515-16012_g1",
+  "version": "1.0.0",
+  "description": "Proyecto para Tópicos Especiales de Programación (TEP) en el Semestre Sep24-Ene25, Seccion 2 (16012) por parte del Grupo 1(Gabriel Castellano, Massiel Perozo, Jesus Gil)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
