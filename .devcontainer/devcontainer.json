@@ -1,0 +1,17 @@
+{
+    "name": "Node.js & TypeScript",
+    "image": "mcr.microsoft.com/devcontainers/typescript-node:latest",
+    "features": {
+      "ghcr.io/devcontainers/features/node:1": {
+        "version": "latest"
+      }
+    },
+    "postCreateCommand": "npm install",
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "ms-vscode.vscode-typescript-tslint-plugin"
+        ]
+      }
+    }
+  }
