@@ -1,0 +1,54 @@
+openapi: 3.0.0
+info:
+  title: Joke API
+  version: 1.0.0
+  description: API para gestionar chistes
+
+paths:
+###Requerimiento 2:
+  /api/jokes:
+    post:
+      summary: Crear un nuevo chiste
+      tags:
+        - Jokes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JokeInput'
+      responses:
+        '201':
+          description: Chiste creado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  text:
+                    type: string
+        '400':
+          description: Error en la solicitud
+
+components:
+  schemas:
+    JokeInput:
+      type: object
+      required:
+        - text
+        - rating
+        - category
+      properties:
+        text:
+          type: string
+        author:
+          type: string
+        rating:
+          type: number
+          minimum: 1
+          maximum: 10
+        category:
+          type: string
+

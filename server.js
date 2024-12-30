@@ -2,6 +2,24 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const app = express();
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load(path.join(__dirname, 'swagger.yaml'));
+
+// Configuracion de opciones de Swagger UI para mayor interactividad
+const options = {
+  explorer: true,
+  swaggerOptions: {
+    docExpansion: 'list',
+    filter: true,
+    showRequestHeaders: true,
+    supportedSubmitMethods: ['get', 'post', 'put', 'delete'],
+    validatorUrl: null,
+  }
+};
+
+//Servir la documentacion de swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Conexión a MongoDB
 mongoose.connect('mongodb://localhost:27017/JokeAppDB');
