@@ -1,22 +1,38 @@
 openapi: 3.0.0
 info:
-  title: Joke API
+  title: API de Chistes
+  description: API para manejar chistes, incluyendo chistes de Chuck Norris, chistes de papá y chistes propios.
   version: 1.0.0
-  description: API para gestionar chistes
+servers:
+  - url: http://localhost:3000
+    description: Servidor de desarrollo
 
 paths:
-###Requerimiento 2:
+###Requerimiento 2
   /api/jokes:
     post:
       summary: Crear un nuevo chiste
-      tags:
-        - Jokes
+      description: Este endpoint permite crear un nuevo chiste personalizado.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/JokeInput'
+              type: object
+              properties:
+                text:
+                  type: string
+                author:
+                  type: string
+                rating:
+                  type: number
+                category:
+                  type: string
+            example:
+              text: "¿Qué le dice un semáforo a otro? No me mires que me estoy cambiando."
+              author: "Anónimo"
+              rating: 4
+              category: "Cortos"
       responses:
         '201':
           description: Chiste creado exitosamente
@@ -27,30 +43,64 @@ paths:
                 properties:
                   id:
                     type: string
+              example:
+                id: "60d5ecb74f7e3d3c9c9f5b1e"
+        '400':
+          description: Error al crear el chiste
+###Requerimiento 3
+  /api/jokes/{id}:
+    put:
+      summary: Actualizar un chiste existente
+      description: Este endpoint permite actualizar un chiste existente por su ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID único del chiste a actualizar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                author:
+                  type: string
+                rating:
+                  type: number
+                category:
+                  type: string
+            example:
+              text: "¿Qué le dice un semáforo a otro? No me mires que me estoy cambiando de color."
+              author: "Anónimo"
+              rating: 5
+              category: "Cortos"
+      responses:
+        '200':
+          description: Chiste actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   text:
                     type: string
+                  author:
+                    type: string
+                  rating:
+                    type: number
+                  category:
+                    type: string
+              example:
+                text: "¿Qué le dice un semáforo a otro? No me mires que me estoy cambiando de color."
+                author: "Anónimo"
+                rating: 5
+                category: "Cortos"
         '400':
-          description: Error en la solicitud
-
-components:
-  schemas:
-    JokeInput:
-      type: object
-      required:
-        - text
-        - rating
-        - category
-      properties:
-        text:
-          type: string
-        author:
-          type: string
-        rating:
-          type: number
-          minimum: 1
-          maximum: 10
-        category:
-          type: string
-
-
-
+          description: Error al actualizar el chiste
+        '404':
+          description: Chiste no encontrado
