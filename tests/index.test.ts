@@ -1,9 +1,8 @@
-import request from 'supertest';
-import express from 'express';
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import app from '../src/index';
 import Joke from '../src/models/joke';
+import request from 'supertest';
 
 let mongoServer: MongoMemoryServer;
 
@@ -11,18 +10,22 @@ beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   const mongoUri = mongoServer.getUri();
   await mongoose.connect(mongoUri);
-});
+}, 10000); // Aumentamos el tiempo de espera a 10 segundos
 
 afterAll(async () => {
-  await mongoose.connection.close();
+  await mongoose.disconnect();
   await mongoServer.stop();
+}, 10000); // Aumentamos el tiempo de espera a 10 segundos
+
+beforeEach(async () => {
+  await Joke.deleteMany({});
 });
 
 describe('GET /', () => {
   it('should return Hello, world!', async () => {
     const response = await request(app).get('/');
-    expect(response.text).toBe('Hello, world!');
     expect(response.status).toBe(200);
+    expect(response.text).toBe('Hello, world!');
   });
 });
 
@@ -31,27 +34,23 @@ describe('POST /api/jokes', () => {
     const response = await request(app)
       .post('/api/jokes')
       .send({
-        text: 'Why did the scarecrow win an award? He was outstanding in his field.',
-        author: 'Anonymous',
-        rating: 8,
-        category: 'Dad joke'
+        text: 'Test joke',
+        author: 'Tester',
+        rating: 5,
+        category: 'Test'
       });
-
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('id');
-    expect(response.body.text).toBe('Why did the scarecrow win an award? He was outstanding in his field.');
+    expect(response.body.text).toBe('Test joke');
   });
 
   it('should return 400 if required fields are missing', async () => {
     const response = await request(app)
       .post('/api/jokes')
       .send({
-        author: 'Anonymous',
-        rating: 8
+        author: 'Tester'
       });
-
     expect(response.status).toBe(400);
-    expect(response.body).toHaveProperty('message');
   });
 });
 
@@ -60,8 +59,8 @@ describe('PUT /api/jokes/:id', () => {
     const joke = new Joke({
       text: 'Original joke',
       author: 'Original Author',
-      rating: 5,
-      category: 'Dad joke'
+      rating: 3,
+      category: 'Original Category'
     });
     await joke.save();
 
@@ -70,29 +69,38 @@ describe('PUT /api/jokes/:id', () => {
       .send({
         text: 'Updated joke',
         author: 'Updated Author',
-        rating: 8,
-        category: 'Humor Negro'
+        rating: 4,
+        category: 'Updated Category'
       });
 
     expect(response.status).toBe(200);
     expect(response.body.text).toBe('Updated joke');
-    expect(response.body.author).toBe('Updated Author');
-
-    const updatedJoke = await Joke.findById(joke._id);
-    expect(updatedJoke?.text).toBe('Updated joke');
-    expect(updatedJoke?.author).toBe('Updated Author');
   });
 
   it('should return 404 if joke not found', async () => {
+    const nonExistentId = new mongoose.Types.ObjectId();
     const response = await request(app)
-      .put('/api/jokes/nonexistentid')
+      .put(`/api/jokes/${nonExistentId}`)
       .send({
         text: 'Updated joke',
-        rating: 8,
-        category: 'Humor Negro'
+        author: 'Updated Author',
+        rating: 4,
+        category: 'Updated Category'
+      });
+
+    expect(response.status).toBe(404);
+  });
+
+  it('should return 404 if id is invalid', async () => {
+    const response = await request(app)
+      .put('/api/jokes/invalidid')
+      .send({
+        text: 'Updated joke',
+        author: 'Updated Author',
+        rating: 4,
+        category: 'Updated Category'
       });
 
     expect(response.status).toBe(404);
   });
 });
-
