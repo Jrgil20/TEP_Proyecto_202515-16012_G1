@@ -104,3 +104,30 @@ paths:
           description: Error al actualizar el chiste
         '404':
           description: Chiste no encontrado
+### Requerimiento 4    
+    delete:
+      summary: Eliminar un chiste
+      description: Este endpoint permite eliminar un chiste existente por su ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID único del chiste a eliminar
+      responses:
+        '200':
+          description: Chiste eliminado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "Chiste eliminado"
+        '404':
+          description: Chiste no encontrado
+        '500':
+          description: Error al eliminar el chiste
