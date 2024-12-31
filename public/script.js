@@ -179,3 +179,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+async function updateJoke(id) {
+    const newText = prompt("Ingrese el nuevo texto del chiste:");
+    if (newText) {
+        try {
+            const response = await fetch(`/api/jokes/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: newText }),
+            });
+            if (response.ok) {
+                alert('Chiste actualizado correctamente');
+                document.getElementById('searchJokeBtn').click();
+            } else {
+                throw new Error('Error al actualizar el chiste');
+            }
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+}

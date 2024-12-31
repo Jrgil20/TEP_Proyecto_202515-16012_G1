@@ -48,6 +48,19 @@ app.post('/api/jokes', async (req, res) => {
     }
 });
 
+///Requerimiento 3
+app.put('/api/jokes/:id', async (req, res) => {
+    try {
+        const joke = await Joke.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!joke) {
+            return res.status(404).json({ message: "Chiste no encontrado" });
+        }
+        res.json(joke);
+    } catch (error) {
+        res.status(400).json({ message: "Error al actualizar el chiste" });
+    }
+});
+
 // Ruta para servir el archivo index.html
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
