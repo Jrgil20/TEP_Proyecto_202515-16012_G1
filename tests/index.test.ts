@@ -3,6 +3,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import app from '../src/index';
+import Joke from '../src/models/joke';
 
 let mongoServer: MongoMemoryServer;
 
@@ -51,6 +52,47 @@ describe('POST /api/jokes', () => {
 
     expect(response.status).toBe(400);
     expect(response.body).toHaveProperty('message');
+  });
+});
+
+describe('PUT /api/jokes/:id', () => {
+  it('should update an existing joke', async () => {
+    const joke = new Joke({
+      text: 'Original joke',
+      author: 'Original Author',
+      rating: 5,
+      category: 'Dad joke'
+    });
+    await joke.save();
+
+    const response = await request(app)
+      .put(`/api/jokes/${joke._id}`)
+      .send({
+        text: 'Updated joke',
+        author: 'Updated Author',
+        rating: 8,
+        category: 'Humor Negro'
+      });
+
+    expect(response.status).toBe(200);
+    expect(response.body.text).toBe('Updated joke');
+    expect(response.body.author).toBe('Updated Author');
+
+    const updatedJoke = await Joke.findById(joke._id);
+    expect(updatedJoke?.text).toBe('Updated joke');
+    expect(updatedJoke?.author).toBe('Updated Author');
+  });
+
+  it('should return 404 if joke not found', async () => {
+    const response = await request(app)
+      .put('/api/jokes/nonexistentid')
+      .send({
+        text: 'Updated joke',
+        rating: 8,
+        category: 'Humor Negro'
+      });
+
+    expect(response.status).toBe(404);
   });
 });
 
