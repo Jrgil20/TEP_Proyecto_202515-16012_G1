@@ -104,3 +104,31 @@ describe('PUT /api/jokes/:id', () => {
     expect(response.status).toBe(404);
   });
 });
+
+describe('DELETE /api/jokes/:id', () => {
+  it('should delete an existing joke', async () => {
+    const joke = new Joke({
+      text: 'Joke to be deleted',
+      author: 'Soon to be gone',
+      rating: 3,
+      category: 'Malo'
+    });
+    await joke.save();
+
+    const response = await request(app)
+      .delete(`/api/jokes/${joke._id}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("Chiste eliminado");
+
+    const deletedJoke = await Joke.findById(joke._id);
+    expect(deletedJoke).toBeNull();
+  });
+
+  it('should return 404 if joke not found', async () => {
+    const response = await request(app)
+      .delete('/api/jokes/nonexistentid');
+
+    expect(response.status).toBe(404);
+  });
+});
