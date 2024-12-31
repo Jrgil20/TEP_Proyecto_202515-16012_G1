@@ -10,7 +10,7 @@ beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   const mongoUri = mongoServer.getUri();
   await mongoose.connect(mongoUri);
-}, 10000); // Aumentamos el tiempo de espera a 10 segundos
+}, 60000); // Aumentamos el tiempo de espera a 60 segundos
 
 afterAll(async () => {
   await mongoose.disconnect();

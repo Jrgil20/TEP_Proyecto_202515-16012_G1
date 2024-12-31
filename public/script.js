@@ -201,3 +201,22 @@ async function updateJoke(id) {
         }
     }
 }
+
+async function deleteJoke(id) {
+    if (confirm("¿Está seguro de que desea eliminar este chiste?")) {
+        try {
+            const response = await fetch(`/api/jokes/${id}`, {
+                method: 'DELETE',
+            });
+            if (response.ok) {
+                alert('Chiste eliminado correctamente');
+                document.getElementById('searchedJokeContainer').innerHTML = '';
+                document.getElementById('jokeIdInput').value = '';
+            } else {
+                throw new Error('Error al eliminar el chiste');
+            }
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+}

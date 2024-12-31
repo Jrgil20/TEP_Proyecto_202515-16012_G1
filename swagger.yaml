@@ -47,7 +47,7 @@ paths:
                 id: "60d5ecb74f7e3d3c9c9f5b1e"
         '400':
           description: Error al crear el chiste
-###Requerimiento 3
+### Requerimiento 3
   /api/jokes/{id}:
     put:
       summary: Actualizar un chiste existente

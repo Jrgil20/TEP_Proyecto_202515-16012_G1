@@ -61,6 +61,19 @@ app.put('/api/jokes/:id', async (req, res) => {
     }
 });
 
+//Requerimiento 4
+app.delete('/api/jokes/:id', async (req, res) => {
+    try {
+        const joke = await Joke.findByIdAndDelete(req.params.id);
+        if (!joke) {
+            return res.status(404).json({ message: "Chiste no encontrado" });
+        }
+        res.json({ message: "Chiste eliminado" });
+    } catch (error) {
+        res.status(500).json({ message: "Error al eliminar el chiste" });
+    }
+});
+
 // Ruta para servir el archivo index.html
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
