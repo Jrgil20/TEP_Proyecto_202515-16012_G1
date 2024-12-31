@@ -104,3 +104,4 @@ paths:
           description: Error al actualizar el chiste
         '404':
           description: Chiste no encontrado
+
