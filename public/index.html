@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joke App</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Joke App</h1>
+        <div class="split-container">
+            <div class="left-section">
+                <h2>Obtener Chiste</h2>
+                <select id="jokeType">
+                    <option value="Chuck">Chuck Norris</option>
+                    <option value="Dad">Dad Joke</option>
+                    <option value="Propio">Chiste Propio</option>
+                </select>
+                <button id="getJokeBtn"><i class="fas fa-laugh"></i> Obtener Chiste</button>
+                <p id="jokeText"></p>
+            </div>
+            <div class="vertical-line"></div>
+            <div class="right-section">
+                <button id="addJokeModalBtn"><i class="fas fa-plus"></i> Agregar Chiste</button>
+                <button id="searchJokeModalBtn"><i class="fas fa-search"></i> Buscar Chiste por ID</button>
+                <button id="categoryCountModalBtn"><i class="fas fa-list"></i> Contar Chistes por Categoría</button>
+                <button id="jokesByRatingModalBtn"><i class="fas fa-star"></i> Buscar Chistes por Puntaje</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="getJokeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="getJokeModal">&times;</span>
+            <h2>Obtener Chiste</h2>
+            <select id="jokeType">
+                <option value="Chuck">Chuck Norris</option>
+                <option value="Dad">Dad Joke</option>
+                <option value="Propio">Chiste Propio</option>
+            </select>
+            <button id="getJokeBtn">Obtener Chiste</button>
+            <p id="jokeText"></p>
+        </div>
+    </div>
+
+    <div id="addJokeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="addJokeModal">&times;</span>
+            <h2>Agregar Chiste</h2>
+            <textarea id="jokeInput" placeholder="Escribe tu chiste aquí"></textarea>
+            <input type="text" id="authorInput" placeholder="Autor (opcional)">
+            <select id="ratingInput">
+                <option value="">Selecciona el puntaje</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            <select id="categoryInput">
+                <option value="">Selecciona la categoría</option>
+                <option value="Dad joke">Dad joke</option>
+                <option value="Humor Negro">Humor Negro</option>
+                <option value="Chistoso">Chistoso</option>
+                <option value="Malo">Malo</option>
+            </select>
+            <button id="addJokeBtn">Agregar Chiste</button>
+        </div>
+    </div>
+
+    <div id="searchJokeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="searchJokeModal">&times;</span>
+            <h2>Buscar Chiste por ID</h2>
+            <input type="text" id="jokeIdInput" placeholder="ID del chiste">
+            <button id="searchJokeBtn">Buscar Chiste</button>
+            <div id="searchedJokeContainer"></div>
+        </div>
+    </div>
+
+    <div id="categoryCountModal" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="categoryCountModal">&times;</span>
+            <h2>Contar Chistes por Categoría</h2>
+            <select id="categoryCountInput">
+                <option value="">Selecciona la categoría</option>
+                <option value="Dad joke">Dad joke</option>
+                <option value="Humor Negro">Humor Negro</option>
+                <option value="Chistoso">Chistoso</option>
+                <option value="Malo">Malo</option>
+            </select>
+            <button id="categoryCountBtn">Contar Chistes</button>
+            <p id="categoryCountText"></p>
+        </div>
+    </div>
+
+    <div id="jokesByRatingModal" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="jokesByRatingModal">&times;</span>
+            <h2>Buscar Chistes por Puntaje</h2>
+            <select id="ratingSearchInput">
+                <option value="">Selecciona el puntaje</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            <button id="jokesByRatingBtn">Buscar Chistes</button>
+            <ul id="jokesByRatingList"></ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
