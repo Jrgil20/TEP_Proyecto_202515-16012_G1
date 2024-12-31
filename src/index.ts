@@ -68,6 +68,25 @@ app.put('/api/jokes/:id', async (req, res) => {
   }
 });
 
+app.delete('/api/jokes/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ message: "Chiste no encontrado" });
+    }
+
+    const joke = await Joke.findByIdAndDelete(id);
+    if (!joke) {
+      return res.status(404).json({ message: "Chiste no encontrado" });
+    }
+    res.json({ message: "Chiste eliminado" });
+  } catch (error) {
+    console.error('Error al eliminar el chiste:', error);
+    res.status(500).json({ message: "Error al eliminar el chiste", error: (error as Error).message });
+  }
+});
+
 if (process.env.NODE_ENV !== 'test') {
   app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
