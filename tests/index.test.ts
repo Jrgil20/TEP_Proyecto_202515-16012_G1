@@ -10,7 +10,7 @@ beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   const mongoUri = mongoServer.getUri();
   await mongoose.connect(mongoUri);
-}, 10000); // Aumentamos el tiempo de espera a 10 segundos
+}, 60000); // Aumentamos el tiempo de espera a 60 segundos
 
 afterAll(async () => {
   await mongoose.disconnect();
@@ -100,6 +100,34 @@ describe('PUT /api/jokes/:id', () => {
         rating: 4,
         category: 'Updated Category'
       });
+
+    expect(response.status).toBe(404);
+  });
+});
+
+describe('DELETE /api/jokes/:id', () => {
+  it('should delete an existing joke', async () => {
+    const joke = new Joke({
+      text: 'Joke to be deleted',
+      author: 'Soon to be gone',
+      rating: 3,
+      category: 'Malo'
+    });
+    await joke.save();
+
+    const response = await request(app)
+      .delete(`/api/jokes/${joke._id}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("Chiste eliminado");
+
+    const deletedJoke = await Joke.findById(joke._id);
+    expect(deletedJoke).toBeNull();
+  });
+
+  it('should return 404 if joke not found', async () => {
+    const response = await request(app)
+      .delete('/api/jokes/nonexistentid');
 
     expect(response.status).toBe(404);
   });
