@@ -168,3 +168,32 @@ describe('GET /api/jokes/:id', () => {
     expect(response.status).toBe(400);
   });
 });
+
+describe('GET /api/jokes/category/:category', () => {
+  it('should return the count of jokes in a given category', async () => {
+    const joke1 = new Joke({
+      text: 'Joke 1',
+      author: 'Author 1',
+      rating: 4,
+      category: 'Category1'
+    });
+    const joke2 = new Joke({
+      text: 'Joke 2',
+      author: 'Author 2',
+      rating: 5,
+      category: 'Category1'
+    });
+    await joke1.save();
+    await joke2.save();
+
+    const response = await request(app).get('/api/jokes/category/Category1');
+    expect(response.status).toBe(200);
+    expect(response.body.count).toBe(2);
+  });
+
+  it('should return 404 if no jokes are found in the given category', async () => {
+    const response = await request(app).get('/api/jokes/category/NonExistentCategory');
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBe('No jokes found in this category');
+  });
+});
