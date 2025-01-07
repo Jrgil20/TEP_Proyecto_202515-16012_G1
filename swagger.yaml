@@ -131,3 +131,41 @@ paths:
           description: Chiste no encontrado
         '500':
           description: Error al eliminar el chiste
+### Requerimiento 5
+    get:
+      summary: Obtener un chiste por ID
+      description: Este endpoint permite obtener un chiste existente por su ID. Si el chiste no se encuentra, retorna un error.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID único del chiste a obtener
+      responses:
+        '200':
+          description: Chiste obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  text:
+                    type: string
+                  author:
+                    type: string
+                  rating:
+                    type: number
+                  category:
+                    type: string
+              example:
+                text: "Hola"
+                author: "a"
+                rating: 5
+                category: "Dad joke"
+        '400':
+          description: ID inválido
+        '404':
+          description: Chiste no encontrado
+        '500':
+          description: Error al obtener el chiste
