@@ -74,28 +74,25 @@ app.delete('/api/jokes/:id', async (req, res) => {
     }
 });
 
-//Requerimiento 5
 app.get('/api/jokes/:id', async (req, res) => {
     try {
         const { id } = req.params;
 
         // Validar si el ID es un ObjectId válido
         if (!mongoose.Types.ObjectId.isValid(id)) {
-            console.log("ID inválido:", id); // Log para depuración
             return res.status(400).json({ message: "ID inválido" });
         }
 
         const joke = await Joke.findById(id);
         if (!joke) {
-            console.log("Chiste no encontrado:", id); // Log para depuración
             return res.status(404).json({ message: "Chiste no encontrado" });
         }
         res.json(joke);
     } catch (error) {
-        console.log("Error al obtener el chiste:", error); // Log para depuración
         res.status(500).json({ message: "Error al obtener el chiste" });
     }
 });
+
 
 // Ruta para servir el archivo index.html
 app.get('/', (req, res) => {
@@ -104,6 +101,4 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
-    console.log(`Visita http://localhost:${PORT} para acceder a la aplicación`);
-});
+    console.log(`Servidor corriendo en el puerto ${PORT}`);    console.log(`Visita http://localhost:${PORT} para acceder a la aplicación`);});
