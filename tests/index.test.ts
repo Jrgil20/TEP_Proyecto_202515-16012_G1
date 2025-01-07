@@ -132,3 +132,32 @@ describe('DELETE /api/jokes/:id', () => {
     expect(response.status).toBe(404);
   });
 });
+
+/* TEST REQUERIMIENTO 5 GET JOKE BY ID */
+
+describe('GET /api/jokes/:id', () => {
+  it('should return a joke by its ID', async () => {
+    const joke = new Joke({
+      text: 'Joke to be fetched',
+      author: 'Author',
+      rating: 4,
+      category: 'Category'
+    });
+    await joke.save();
+
+    const response = await request(app).get(`/api/jokes/${joke._id}`);
+    expect(response.status).toBe(200);
+    expect(response.body.text).toBe('Joke to be fetched');
+  });
+
+  it('should return 404 if joke not found', async () => {
+    const nonExistentId = new mongoose.Types.ObjectId();
+    const response = await request(app).get(`/api/jokes/${nonExistentId}`);
+    expect(response.status).toBe(404);
+  });
+
+  it('should return 400 if id is invalid', async () => {
+    const response = await request(app).get('/api/jokes/invalidid');
+    expect(response.status).toBe(400);
+  });
+});
