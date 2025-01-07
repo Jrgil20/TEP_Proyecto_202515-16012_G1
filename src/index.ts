@@ -103,6 +103,19 @@ app.get('/api/jokes/:id', async (req, res) => {
   }
 });
 
+app.get('/api/jokes/category/:category', async (req, res) => {
+  try {
+    const { category } = req.params;
+    const count = await Joke.countDocuments({ category });
+    if (count === 0) {
+      return res.status(404).json({ message: 'No jokes found in this category' });
+    }
+    res.json({ count });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener la cantidad de chistes' });
+  }
+});
+
 if (process.env.NODE_ENV !== 'test') {
   app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
