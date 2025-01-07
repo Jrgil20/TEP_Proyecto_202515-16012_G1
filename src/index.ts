@@ -106,13 +106,17 @@ app.get('/api/jokes/:id', async (req, res) => {
 app.get('/api/jokes/category/:category', async (req, res) => {
   try {
     const { category } = req.params;
+    if (!category) {
+      return res.status(400).json({ message: 'Categoría es requerida' });
+    }
     const count = await Joke.countDocuments({ category });
     if (count === 0) {
       return res.status(404).json({ message: 'No jokes found in this category' });
     }
     res.json({ count });
   } catch (error) {
-    res.status(500).json({ message: 'Error al obtener la cantidad de chistes' });
+    console.error('Error al obtener la cantidad de chistes:', error);
+    res.status(500).json({ message: 'Error al obtener la cantidad de chistes', error: (error as Error).message });
   }
 });
 
