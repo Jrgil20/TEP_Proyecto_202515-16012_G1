@@ -169,3 +169,33 @@ paths:
           description: Chiste no encontrado
         '500':
           description: Error al obtener el chiste
+### Requerimiento 6
+  /api/jokes/category/{category}:
+    get:
+      summary: Obtener la cantidad de chistes por categoría
+      description: Este endpoint permite obtener la cantidad de chistes en una categoría específica. Si no se encuentran chistes en esa categoría, retorna un mensaje de error.
+      parameters:
+        - in: path
+          name: category
+          required: true
+          schema:
+            type: string
+          description: Categoría de los chistes a contar
+      responses:
+        '200':
+          description: Cantidad de chistes obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+              example:
+                count: 5
+        '400':
+          description: Categoría es requerida
+        '404':
+          description: No se encontraron chistes en esta categoría
+        '500':
+          description: Error al obtener la cantidad de chistes
