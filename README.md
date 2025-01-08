@@ -39,15 +39,86 @@ dificultades, comentarios extras, que utilizaron, etc. (dado que el proyecto se 
 mi maquina).
 Uso correcto de los códigos HTTP.
 
-## Requerimientos Mandatorios
+## Requerimientos
 
-1. **Requerimiento 1**: Descripción del primer requerimiento.
-2. **Requerimiento 2**: Descripción del segundo requerimiento.
-3. **Requerimiento 3**: Descripción del tercer requerimiento.
-4. **Requerimiento 4**: Descripción del cuarto requerimiento.
-5. **Requerimiento 5**: Descripción del quinto requerimiento.
-6. **Requerimiento 6**: Descripción del sexto requerimiento.
-7. **Requerimiento 7**: Descripción del séptimo requerimiento.
+
+### 1. Obtener un chiste (Jesus Gil)
+**Endpoint:** `GET /joke/:type`
+
+Obtiene un chiste basado en el tipo especificado en el parámetro de la URL.
+
+- **Parámetros:**
+    - `type` (string): Puede ser "Chuck", "Dad" o "Propio".
+        - "Chuck": Obtiene un chiste de la API de Chuck Norris.
+        - "Dad": Obtiene un chiste de la API de Dad Jokes.
+        - "Propio": Obtiene un chiste de la base de datos interna. Si no hay chistes, retorna el mensaje "Aun no hay chistes, cree uno!".
+        - Cualquier otro valor retorna un error.
+
+### 2. Crear un chiste (Massiel Perozo)
+**Endpoint:** `POST /joke`
+
+Guarda un chiste en la base de datos.
+
+- **Cuerpo de la solicitud:**
+    - `texto` (string, requerido): Texto del chiste.
+    - `autor` (string, opcional): Nombre de quien escribió el chiste. Si no se proporciona, se asigna "Se perdió en el Ávila como Led".
+    - `puntaje` (number, requerido): Puntaje del 1 al 10 para saber qué tan bueno es el chiste.
+    - `categoria` (string, requerido): Categoría del chiste. Valores permitidos: "Dad joke", "Humor Negro", "Chistoso", "Malo".
+
+- **Respuesta:**
+    - Retorna el ID del chiste creado.
+
+### 3. Actualizar un chiste (Massiel perozo)
+**Endpoint:** `PUT /joke/:id`
+
+Actualiza los campos de un chiste existente basado en su ID.
+
+- **Parámetros:**
+    - `id` (string): ID del chiste a actualizar.
+
+- **Cuerpo de la solicitud:**
+    - Cualquier campo mencionado en el endpoint de creación de chistes, excepto el ID.
+
+### 4. Eliminar un chiste (Massiel Perozo)
+**Endpoint:** `DELETE /joke/:id`
+
+Elimina un chiste basado en su ID.
+
+- **Parámetros:**
+    - `id` (string): ID del chiste a eliminar.
+
+### 5. Obtener un chiste por ID (gabriel Castellano)
+**Endpoint:** `GET /joke/:id`
+
+Obtiene un chiste basado en su ID.
+
+- **Parámetros:**
+    - `id` (string): ID del chiste a obtener.
+
+- **Respuesta:**
+    - Si el chiste no existe, retorna un error.
+
+### 6. Obtener cantidad de chistes por categoría (gabriel Castellano)
+**Endpoint:** `GET /jokes/count/:categoria`
+
+Obtiene la cantidad de chistes en la base de datos por categoría.
+
+- **Parámetros:**
+    - `categoria` (string): Categoría de los chistes a contar.
+
+- **Respuesta:**
+    - Si no existen chistes en la categoría especificada, retorna un mensaje de error.
+
+### 7. Obtener chistes por puntaje (Jesus Gil)
+**Endpoint:** `GET /jokes/score/:puntaje`
+
+Obtiene todos los chistes en la base de datos con un puntaje específico.
+
+- **Parámetros:**
+    - `puntaje` (number): Puntaje de los chistes a obtener.
+
+- **Respuesta:**
+    - Si no existen chistes con el puntaje especificado, retorna un mensaje de error.
 
 ## Instalación
 
@@ -56,7 +127,7 @@ Para instalar y ejecutar el proyecto localmente, sigue estos pasos:
 1. Clona el repositorio:
    ```bash
    git clone https://github.com/tu-usuario/Proyecto-TEP24.git
-   Lo siento mucho por no haber sido de ayuda hasta ahora. Entiendo que quieres el README.md completo, con todos los comandos juntos y manteniendo el formato original. Voy a proporcionarte el archivo README.md completo, incluyendo la nueva información sobre cómo iniciar MongoDB y ejecutar el programa, todo en un solo bloque de código sin separaciones:
+   ```
 
 2. Navega al directorio del proyecto:
 
