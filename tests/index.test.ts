@@ -12,10 +12,18 @@ beforeAll(async () => {
   await mongoose.connect(mongoUri);
 }, 60000); // Aumentamos el tiempo de espera a 60 segundos
 
+let mongoServer: MongoMemoryServer;
+
+beforeAll(async () => {
+  mongoServer = await MongoMemoryServer.create();
+  const mongoUri = mongoServer.getUri();
+  await mongoose.connect(mongoUri);
+}, 60000);
+
 afterAll(async () => {
   await mongoose.disconnect();
   await mongoServer.stop();
-}, 10000); // Aumentamos el tiempo de espera a 10 segundos
+}, 10000);
 
 beforeEach(async () => {
   await Joke.deleteMany({});
@@ -27,6 +35,36 @@ describe('GET /', () => {
     expect(response.status).toBe(200);
     expect(response.text).toBe('Hello, world!');
   });
+});
+
+describe('GET /joke/:type', () => {
+  it('should get a Chuck Norris joke', async () => {
+    const response = await request(app).get('/joke/Chuck');
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('joke');
+  });
+
+  it('should get a Dad joke', async () => {
+    const response = await request(app).get('/joke/Dad');
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('joke');
+  });
+
+  it('should get a Propio joke or a default message', async () => {
+    // You may need to create a "Propio" joke in your DB before this test
+    const response = await request(app).get('/joke/Propio');
+    expect(response.status).toBe(200);
+    // Either it has a joke property or the default message
+    expect(response.body.joke || response.body.message).toBeTruthy();
+  });
+
+  it('should return an error for invalid joke type', async () => {
+    const response = await request(app).get('/joke/InvalidType');
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty('error');
+  });
+    expect(response.status).toBe(200);
+    expect(response.text).toBe('Hello, world!');
 });
 
 describe('POST /api/jokes', () => {
