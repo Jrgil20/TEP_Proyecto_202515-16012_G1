@@ -152,6 +152,19 @@ app.get('/joke/:type', async (req, res) => {
   }
 });
 
+app.get('/jokes/score/:puntaje', async (req, res) => {
+  try {
+    const { puntaje } = req.params;
+    const jokes = await Joke.find({ rating: puntaje });
+    if (jokes.length === 0) {
+      return res.status(404).json({ message: 'No jokes found with the specified score' });
+    }
+    res.json(jokes);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener los chistes', error: (error as Error).message });
+  }
+});
+
 if (process.env.NODE_ENV !== 'test') {
   app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);

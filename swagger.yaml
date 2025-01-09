@@ -245,3 +245,37 @@ paths:
                     type: string
               example:
                 error: "Error al obtener el chiste"
+### Requerimiento 7
+  /jokes/score/{puntaje}:
+    get:
+      summary: Obtener chistes por puntaje
+      description: Obtiene todos los chistes en la base de datos con un puntaje específico.
+      parameters:
+        - in: path
+          name: puntaje
+          required: true
+          schema:
+            type: integer
+          description: Puntaje de los chistes a obtener
+      responses:
+        '200':
+          description: Lista de chistes obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+                    author:
+                      type: string
+                    rating:
+                      type: integer
+                    category:
+                      type: string
+        '404':
+          description: No se encontraron chistes con el puntaje especificado
+        '500':
+          description: Error al obtener los chistes
