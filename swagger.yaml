@@ -1,0 +1,281 @@
+openapi: 3.0.0
+info:
+  title: API de Chistes
+  description: API para manejar chistes, incluyendo chistes de Chuck Norris, chistes de papá y chistes propios.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Servidor de desarrollo
+
+paths:
+###Requerimiento 2
+  /api/jokes:
+    post:
+      summary: Crear un nuevo chiste
+      description: Este endpoint permite crear un nuevo chiste personalizado.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                author:
+                  type: string
+                rating:
+                  type: number
+                category:
+                  type: string
+            example:
+              text: "¿Qué le dice un semáforo a otro? No me mires que me estoy cambiando."
+              author: "Anónimo"
+              rating: 4
+              category: "Cortos"
+      responses:
+        '201':
+          description: Chiste creado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+              example:
+                id: "60d5ecb74f7e3d3c9c9f5b1e"
+        '400':
+          description: Error al crear el chiste
+### Requerimiento 3
+  /api/jokes/{id}:
+    put:
+      summary: Actualizar un chiste existente
+      description: Este endpoint permite actualizar un chiste existente por su ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID único del chiste a actualizar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                author:
+                  type: string
+                rating:
+                  type: number
+                category:
+                  type: string
+            example:
+              text: "¿Qué le dice un semáforo a otro? No me mires que me estoy cambiando de color."
+              author: "Anónimo"
+              rating: 5
+              category: "Cortos"
+      responses:
+        '200':
+          description: Chiste actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  text:
+                    type: string
+                  author:
+                    type: string
+                  rating:
+                    type: number
+                  category:
+                    type: string
+              example:
+                text: "¿Qué le dice un semáforo a otro? No me mires que me estoy cambiando de color."
+                author: "Anónimo"
+                rating: 5
+                category: "Cortos"
+        '400':
+          description: Error al actualizar el chiste
+        '404':
+          description: Chiste no encontrado
+### Requerimiento 4    
+    delete:
+      summary: Eliminar un chiste
+      description: Este endpoint permite eliminar un chiste existente por su ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID único del chiste a eliminar
+      responses:
+        '200':
+          description: Chiste eliminado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "Chiste eliminado"
+        '404':
+          description: Chiste no encontrado
+        '500':
+          description: Error al eliminar el chiste
+### Requerimiento 5
+    get:
+      summary: Obtener un chiste por ID
+      description: Este endpoint permite obtener un chiste existente por su ID. Si el chiste no se encuentra, retorna un error.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID único del chiste a obtener
+      responses:
+        '200':
+          description: Chiste obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  text:
+                    type: string
+                  author:
+                    type: string
+                  rating:
+                    type: number
+                  category:
+                    type: string
+              example:
+                text: "Hola"
+                author: "a"
+                rating: 5
+                category: "Dad joke"
+        '400':
+          description: ID inválido
+        '404':
+          description: Chiste no encontrado
+        '500':
+          description: Error al obtener el chiste
+### Requerimiento 6
+  /api/jokes/category/{category}:
+    get:
+      summary: Obtener la cantidad de chistes por categoría
+      description: Este endpoint permite obtener la cantidad de chistes en una categoría específica. Si no se encuentran chistes en esa categoría, retorna un mensaje de error.
+      parameters:
+        - in: path
+          name: category
+          required: true
+          schema:
+            type: string
+          description: Categoría de los chistes a contar
+      responses:
+        '200':
+          description: Cantidad de chistes obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+              example:
+                count: 5
+        '400':
+          description: Categoría es requerida
+        '404':
+          description: No se encontraron chistes en esta categoría
+        '500':
+          description: Error al obtener la cantidad de chistes
+### Requerimiento 1
+  /joke/{type}:
+    get:
+      summary: Obtener un chiste por tipo
+      description: Este endpoint permite obtener un chiste basado en el tipo especificado en el parámetro de la URL.
+      parameters:
+        - in: path
+          name: type
+          required: true
+          schema:
+            type: string
+          description: Tipo de chiste a obtener (Chuck, Dad, Propio)
+      responses:
+        '200':
+          description: Chiste obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  joke:
+                    type: string
+              example:
+                joke: "This is a joke"
+        '400':
+          description: Tipo de chiste no válido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Tipo de chiste no válido"
+        '500':
+          description: Error al obtener el chiste
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Error al obtener el chiste"
+### Requerimiento 7
+  /jokes/score/{puntaje}:
+    get:
+      summary: Obtener chistes por puntaje
+      description: Obtiene todos los chistes en la base de datos con un puntaje específico.
+      parameters:
+        - in: path
+          name: puntaje
+          required: true
+          schema:
+            type: integer
+          description: Puntaje de los chistes a obtener
+      responses:
+        '200':
+          description: Lista de chistes obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+                    author:
+                      type: string
+                    rating:
+                      type: integer
+                    category:
+                      type: string
+        '404':
+          description: No se encontraron chistes con el puntaje especificado
+        '500':
+          description: Error al obtener los chistes
