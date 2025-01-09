@@ -199,3 +199,49 @@ paths:
           description: No se encontraron chistes en esta categoría
         '500':
           description: Error al obtener la cantidad de chistes
+### Requerimiento 1
+  /joke/{type}:
+    get:
+      summary: Obtener un chiste por tipo
+      description: Este endpoint permite obtener un chiste basado en el tipo especificado en el parámetro de la URL.
+      parameters:
+        - in: path
+          name: type
+          required: true
+          schema:
+            type: string
+          description: Tipo de chiste a obtener (Chuck, Dad, Propio)
+      responses:
+        '200':
+          description: Chiste obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  joke:
+                    type: string
+              example:
+                joke: "This is a joke"
+        '400':
+          description: Tipo de chiste no válido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Tipo de chiste no válido"
+        '500':
+          description: Error al obtener el chiste
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Error al obtener el chiste"
