@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import Joke from './models/joke';
+import axios from 'axios';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -117,6 +118,37 @@ app.get('/api/jokes/category/:category', async (req, res) => {
   } catch (error) {
     console.error('Error al obtener la cantidad de chistes:', error);
     res.status(500).json({ message: 'Error al obtener la cantidad de chistes', error: (error as Error).message });
+  }
+});
+
+app.get('/joke/:type', async (req, res) => {
+  const { type } = req.params;
+
+  try {
+    let joke;
+
+    if (type === 'Chuck') {
+      const response = await axios.get('https://api.chucknorris.io/jokes/random');
+      joke = response.data.value;
+    } else if (type === 'Dad') {
+      const response = await axios.get('https://icanhazdadjoke.com/', {
+        headers: { Accept: 'application/json' }
+      });
+      joke = response.data.joke;
+    } else if (type === 'Propio') {
+      const jokeFromDB = await Joke.findOne();
+      if (jokeFromDB) {
+        joke = jokeFromDB.text;
+      } else {
+        return res.status(200).json({ message: "Aun no hay chistes, cree uno!" });
+      }
+    } else {
+      return res.status(400).json({ error: 'Tipo de chiste no válido' });
+    }
+
+    res.status(200).json({ joke });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener el chiste' });
   }
 });
 
