@@ -120,6 +120,56 @@ Obtiene todos los chistes en la base de datos con un puntaje específico.
 - **Respuesta:**
     - Si no existen chistes con el puntaje especificado, retorna un mensaje de error.
 
+## Configuración para Ejecutar el Proyecto
+
+Si no tienes instalado Node ni MongoDB localmente, puedes dirigirte a:
+
+[https://github.com/Jrgil20/mongodb-codespaces](https://github.com/Jrgil20/mongodb-codespaces)
+
+1. Clona o haz un fork del repositorio, o crea un codespace como invitado.
+2. Una vez en el codespace, trae el otro repositorio:
+
+    ```bash
+    git clone https://github.com/Jrgil20/TEP_Proyecto_202515-16012_G1.git
+    ```
+
+3. Accede a la carpeta:
+
+    ```bash
+    cd TEP_Proyecto_202515-16012_G1
+    ```
+
+4. Crea el archivo `.env` con:
+
+    ```env
+    PORT=3000
+    MONGODB_URI=mongodb://localhost:27017/JokeAppDB
+    # o la conexión que prefieras
+    ```
+
+5. Configura la conexión desde la extensión de MongoDB.
+ MONGODB_URI=mongodb://localhost:27017/JokeAppDB
+
+6. Instala las dependencias:
+
+    ```bash
+    npm install && npm install axios
+    ```
+
+7. Para probar tu configuración:
+
+    ```bash
+    npm test
+    ```
+
+8. Para ejecutar el servidor:
+
+    ```bash
+    node server
+    ```
+
+Con estas instrucciones, tendrás un entorno remoto o local configurado para desarrollar y probar el proyecto.
+
 ## Instalación
 
 Para instalar y ejecutar el proyecto localmente, sigue estos pasos:
