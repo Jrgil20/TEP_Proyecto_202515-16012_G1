@@ -12,14 +12,6 @@ beforeAll(async () => {
   await mongoose.connect(mongoUri);
 }, 60000); // Aumentamos el tiempo de espera a 60 segundos
 
-let mongoServer: MongoMemoryServer;
-
-beforeAll(async () => {
-  mongoServer = await MongoMemoryServer.create();
-  const mongoUri = mongoServer.getUri();
-  await mongoose.connect(mongoUri);
-}, 60000);
-
 afterAll(async () => {
   await mongoose.disconnect();
   await mongoServer.stop();
@@ -63,8 +55,6 @@ describe('GET /joke/:type', () => {
     expect(response.status).toBe(400);
     expect(response.body).toHaveProperty('error');
   });
-    expect(response.status).toBe(200);
-    expect(response.text).toBe('Hello, world!');
 });
 
 describe('POST /api/jokes', () => {
