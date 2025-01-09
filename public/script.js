@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function getJoke() {
         const type = jokeType.value;
         try {
-            const response = await fetch(`/api/jokes?type=${type}`);
+            const response = await fetch(`/joke/${type}`);
             const data = await response.json();
             if (response.ok) {
                 jokeText.textContent = data.joke;
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch(`/api/jokes/rating/${ratingSearchInput.value}`);
+            const response = await fetch(`/jokes/score/${ratingSearchInput.value}`);
             const data = await response.json();
             if (response.ok) {
                 jokesByRatingList.innerHTML = data.map(joke => `<li>${joke.text}</li>`).join('');
