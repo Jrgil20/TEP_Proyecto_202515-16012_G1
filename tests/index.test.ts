@@ -235,3 +235,32 @@ describe('GET /api/jokes/category/:category', () => {
     expect(response.body.message).toBe('No jokes found in this category');
   });
 });
+
+describe('GET /jokes/score/:puntaje', () => {
+  it('should return jokes with the specified score', async () => {
+    const joke1 = new Joke({
+      text: 'Joke 1',
+      author: 'Author 1',
+      rating: 5,
+      category: 'Category1'
+    });
+    const joke2 = new Joke({
+      text: 'Joke 2',
+      author: 'Author 2',
+      rating: 5,
+      category: 'Category1'
+    });
+    await joke1.save();
+    await joke2.save();
+
+    const response = await request(app).get('/jokes/score/5');
+    expect(response.status).toBe(200);
+    expect(response.body.length).toBe(2);
+  });
+
+  it('should return an error message if no jokes are found with the specified score', async () => {
+    const response = await request(app).get('/jokes/score/10');
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBe('No jokes found with the specified score');
+  });
+});
